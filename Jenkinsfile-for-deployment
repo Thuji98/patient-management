@@ -4,7 +4,7 @@ pipeline{
         stage ('Checkout Source using Tag') {
             steps {
                 sh 'rm -rf patient-management'
-                sh 'git clone -b params.deployImageVersion --single-branch https://github.com/Thuji98/patient-management.git && cd patient-management'
+                sh 'git clone -b "${params.deployImageVersion}" --single-branch https://github.com/Thuji98/patient-management.git && cd patient-management'
 
             }
         }
