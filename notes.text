@@ -1,0 +1,8 @@
+stage ('Kubernetes Deployment') {
+            steps {
+                 withKubeConfig([credentialsId: 'kubeconfig1']) {
+                      sh 'kubectl apply -f deployment.yml'
+                 }
+            }
+        }
+                    sh 'mvn dockerfile:push'
