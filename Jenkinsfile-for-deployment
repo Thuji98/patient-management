@@ -3,7 +3,8 @@ pipeline{
     stages {
         stage ('Checkout Source using Tag') {
             steps {
-                sh 'git clone -b "@deployImageVersion" --branch "master" "https://github.com/Thuji98/patient-management.git"'
+                sh 'rm -rf'
+                sh 'git clone -b "@deployImageVersion" --branch "master" "https://github.com/Thuji98/patient-management.git" && cd "patient-management"'
                 sh 'echo "@deployImageVersion"'
             }
         }
