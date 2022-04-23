@@ -1,0 +1,11 @@
+pipeline{
+    agent any
+    stages {
+        stage ('Checkout Source using Tag') {
+            steps {
+                git clone --depth 1 --branch "deployImageVersion" "https://github.com/Thuji98/patient-management.git"
+            }
+        }
+
+    }
+}
