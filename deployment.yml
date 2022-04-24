@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: patient-management
-          image: thuji98/patient-management:latest
+          image: thuji98/patient-management:${project.version}
           imagePullPolicy: Always
           ports:
             - containerPort: 9013

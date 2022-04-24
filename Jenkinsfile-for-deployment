@@ -3,11 +3,20 @@ pipeline{
     stages {
         stage ('Checkout Source using Tag') {
             steps {
-                sh 'rm -rf patient-management'
-                sh 'git clone -b "${params.deployImageVersion}" --single-branch https://github.com/Thuji98/patient-management.git && cd patient-management'
-
+                sh 'echo ${tags}'
+                sh 'rm -rf "patient-management"'
+                sh 'git clone -b ${tags} https://github.com/Thuji98/patient-management.git && cd "patient-management"'
             }
         }
-
+        stage ('Docker build and push') {
+            steps {
+                sh 'mvn package dockerfile:push'
+            }
+        }
+        stage ('Kubernetes Deployment') {
+            steps {
+                sh 'kubectl apply -f deployment.yml'
+            }
+        }
     }
 }

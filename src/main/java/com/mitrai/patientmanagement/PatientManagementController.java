@@ -27,4 +27,5 @@ public class PatientManagementController {
     public String hello3(){
         return "Hello there3!";
     }
+
 }
