@@ -28,4 +28,9 @@ public class PatientManagementController {
         return "Hello there3!";
     }
 
+    @GetMapping("say4")
+    public String hello4(){
+        return "Hello there4!";
+    }
+
 }
