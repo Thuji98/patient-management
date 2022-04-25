@@ -33,4 +33,9 @@ public class PatientManagementController {
         return "Hello there4!";
     }
 
+    @GetMapping("say5")
+    public String hello5(){
+        return "Hello there5!";
+    }
+
 }
