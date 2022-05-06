@@ -1,3 +1,44 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  finalizers:
+    - kubernetes.io/pv-protection
+  name: logs-patient-management-pv-default
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 4Gi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: logs-patient-management-pv-claim-default
+    namespace: default
+  nfs:
+    path: "/srv/nfsshare"
+    server: 192.168.8.114
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+status:
+  phase: Bound
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: logs-patient-management-pv-claim-default
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 4Gi
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,12 +55,19 @@ spec:
       labels:
         app: patient-management
     spec:
+      volumes:
+        - name: patient-management-volume
+          persistentVolumeClaim:
+            claimName: logs-patient-management-pv-claim-default
       containers:
         - name: patient-management
           image: thuji98/patient-management
           imagePullPolicy: Always
           ports:
             - containerPort: 9013
+          volumeMounts:
+            - name: patient-management-volume
+              mountPath: /nfsshare
 
 ---
 
