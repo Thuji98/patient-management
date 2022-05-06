@@ -25,20 +25,6 @@ status:
 
 ---
 
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: logs-patient-management-pv-claim-default
-  namespace: default
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 4Gi
-
----
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:

@@ -15,6 +15,7 @@ public class PatientManagementController {
 
     @GetMapping("say")
     public String hello(){
+        logger.info("Hi from hello method!");
         return "Hello there!";
     }
 
