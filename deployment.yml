@@ -1,27 +1,38 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  finalizers:
-    - kubernetes.io/pv-protection
-  name: logs-patient-management-pv-default
+  name: patient-management-pv
   namespace: default
 spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
   accessModes:
     - ReadWriteMany
-  capacity:
-    storage: 4Gi
-  claimRef:
-    apiVersion: v1
-    kind: PersistentVolumeClaim
-    name: logs-patient-management-pv-claim-default
-    namespace: default
   nfs:
-    path: "/srv/nfsshare"
     server: 192.168.8.114
-  persistentVolumeReclaimPolicy: Retain
+    path: "/srv/nfsshare/msa"
   volumeMode: Filesystem
-status:
-  phase: Bound
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: patient-management-pvc
+  namespace: default
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      purpose: patient-management-logs
+  volumeName: patient-management-pv
+  volumeMode: Filesystem
 
 ---
 
@@ -29,10 +40,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: patient-management
+  namespace: default
   labels:
     app: patient-management
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app : patient-management
@@ -42,9 +54,9 @@ spec:
         app: patient-management
     spec:
       volumes:
-        - name: patient-management-volume
+        - name: patient-management-logs
           persistentVolumeClaim:
-            claimName: logs-patient-management-pv-claim-default
+            claimName: patient-management-pvc
       containers:
         - name: patient-management
           image: thuji98/patient-management
@@ -53,7 +65,21 @@ spec:
             - containerPort: 9013
           volumeMounts:
             - name: patient-management-volume
-              mountPath: /nfsshare
+              mountPath: /logs
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+            - name: POD_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.uid
 
 ---
 
