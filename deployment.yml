@@ -67,6 +67,8 @@ spec:
             - name: patient-management-volume
               mountPath: /logs
           env:
+            - name: TZ
+              value: Asia/Colombo
             - name: POD_NAMESPACE
               valueFrom:
                 fieldRef:
