@@ -79,8 +79,10 @@
 				</executions>
 				<configuration>
 					<repository>docker.io/thuji98/patient-management</repository>
+					<username>thuji98</username>
+					<password>tF6iYT_RH6*9nV6</password>
 					<tag>${project.version}</tag>
-					<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+<!--					<useMavenSettingsForAuth>true</useMavenSettingsForAuth>-->
 				</configuration>
 				<dependencies>
 					<dependency>
