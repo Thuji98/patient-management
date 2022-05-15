@@ -78,7 +78,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<repository>thuji98/patient-management</repository>
+					<repository>docker.io/thuji98/patient-management</repository>
 					<tag>${project.version}</tag>
 					<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
 				</configuration>
